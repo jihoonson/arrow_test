@@ -1,0 +1,20 @@
+cmake_minimum_required(VERSION 3.4.1)
+project(arrow_test)
+
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O3 -Wall -mavx2")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -O1 -Wall -mavx2")
+
+find_library(ARROW_LIB NAMES arrow)
+find_library(ARROW_IO_LIB NAMES arrow_io)
+find_library(ARROW_IPC_LIB NAMES arrow_ipc)
+set(ARROW_LIBS ${ARROW_LIB} ${ARROW_IO_LIB} ${ARROW_IPC_LIB})
+set(Boost_USE_STATIC_LIBS       ON)
+set(Boost_USE_STATIC_RUNTIME    OFF)
+find_package(Boost 1.59.0 COMPONENTS program_options system)
+
+#include_directories(SYSTEM /Users/jihoon/Projects/arrow/install/include ${Boost_INCLUDE_DIRS})
+include_directories(SYSTEM ${Boost_INCLUDE_DIRS})
+set(SOURCE_FILES main.cpp)
+add_executable(arrow_test ${SOURCE_FILES})
+message(STATUS "arrow: ${ARROW_LIBS}")
+target_link_libraries(arrow_test ${ARROW_LIBS} ${Boost_LIBRARIES})
